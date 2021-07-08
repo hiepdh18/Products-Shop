@@ -4,8 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-
-exports.createUser = (req, res) => {
+exports.signup = (req, res) => {
   userModel.find({ email: req.body.email })
     .exec()
     .then(user => {
@@ -67,25 +66,29 @@ exports.signin = (req, res, next) => {
           req.body.password,
           user.password,
           (err, result) => {
-            if(err) {
+            if (err) {
               res.status(401).json({
-                message : err
+                message: err
               })
             }
-            if(result) {
+            if (result) {
               const token = jwt.sign(
                 {
-                  userId : user._id,
-                  email : user.email
+                  userId: user._id,
+                  email: user.email
                 },
                 process.env.JWT_KEY,
-                { 
-                  expiresIn :"1h" 
+                {
+                  expiresIn: "1h"
                 }
               )
               res.status(200).json({
-                message : "Auth successful!!!",
-                token : token
+                message: "Auth successful!!!",
+                token: token
+              })
+            } else {
+              res.json({
+                message: "Auth failed!!!"
               })
             }
           }
@@ -102,9 +105,61 @@ exports.signin = (req, res, next) => {
       })
     })
 }
-exports.update = (req, res) => {
+
+exports.update = (req, res, next) => {
+  userModel.findOneAndUpdate({ _id: req.body.id }, { fullname: req.body.fullname })
+    .exec()
+    .then(user => {
+      if (user) {
+        res.status(200).json(user)
+      } else {
+        res.status(404).json({
+          message: "404 not found!!!"
+        })
+      }
+    })
+    .catch()
+}
+exports.getAllUser = (req, res) => {
+  userModel.find()
+    .exec()
+    .then(users => {
+      res.json(users)
+    })
+    .catch(err => {
+      res.json({
+        message: err
+      })
+    })
+}
+exports.changePass = (req, res) => {
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) {
+      res.status(500).json({
+        error: err
+      })
+    } else {
+      userModel.findOneAndUpdate({ _id: req.body.id }, { password : hash })
+        .exec()
+        .then(user => {
+          if (user) {
+            res.status(200).json(user)
+          } else {
+            res.status(404).json({
+              message: "404 not found!!!"
+            })
+          }
+        })
+        .catch(err => {
+          res. json({
+            message: err
+          })
+        })
+    }
+  })
+}
+
+exports.resetPass = (req, res) => {
 
   res.json('user')
-
-
 }

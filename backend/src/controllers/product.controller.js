@@ -97,7 +97,7 @@ exports.deleteProduct = async (req, res, next) => {
     res.json("thanh cong")
 }
 exports.getProduct = (req, res, next) => {
-    const id = req.params.productId
+    const id = req.params.id
     productModel.findById(id)
         .then(product =>
             res.status(200).json(product)

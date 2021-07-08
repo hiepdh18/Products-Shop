@@ -14,7 +14,7 @@ router.use('/category', categoryRoutes)
 
 
 router.get('/', (req, res) => {
-    res.status(200).send('Welcome to our API!!! 🚀🚀🚀🚀')
+    res.status(200).json('Welcome to our API!!! 🚀🚀🚀🚀')
 });
 
 

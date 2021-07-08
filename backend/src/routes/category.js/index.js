@@ -1,12 +1,17 @@
-const express = require('express');
-const { create, getAll, deleteOne, getOne, update} = require('../../controllers/category.controller')
+const express = require('express')
+const { create, getAll, deleteOne, getOne, update } = require('../../controllers/category.controller')
+const checkAuth = require('../../middlewares/check-auth')
 
-const router = express.Router();
+const router = express.Router()
 
-router.post('/create', create);
-router.get('/getall', getAll);
-router.post('/delete', deleteOne);
-router.get('/get/:id', getOne);
-router.post('/update', update);
+router.get('/get', getAll)
+router.get('/get/:id', getOne)
+router.post('/create', checkAuth, create)
+router.post('/update', checkAuth, update)
+router.delete('/delete', checkAuth, deleteOne)
 
-module.exports = router;
+router.get('/', (req, res) => {
+    res.status(200).send('API for categories!!!')
+});
+
+module.exports = router
