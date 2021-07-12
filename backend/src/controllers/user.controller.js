@@ -2,18 +2,21 @@ const userModel = require('../models/user.model')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
 require('dotenv').config()
 
 exports.signup = (req, res) => {
-  userModel.find({ email: req.body.email })
+  const {name, email, password} = req.body 
+  if(!name || !email || !password) throw createError.BadRequest()
+  userModel.findOne({ email: email })
     .exec()
     .then(user => {
-      if (user.length >= 1) {
+      if (user) {
         res.status(409).json({
           message: "Email exists!!!!!"
         })
       } else {
-        bcrypt.hash(req.body.password, 10, (err, hash) => {
+        bcrypt.hash(password, 10, (err, hash) => {
           if (err) {
             res.status(500).json({
               error: err
@@ -21,8 +24,8 @@ exports.signup = (req, res) => {
           } else {
             const user = new userModel({
               _id: mongoose.Types.ObjectId(),
-              fullname: req.body.name,
-              email: req.body.email,
+              name: name,
+              email: email,
               password: hash
             })
             user.save()

@@ -1,16 +1,41 @@
 const mongoose = require('mongoose')
+const validator = require('validator')
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     _id: { type: Schema.Types.ObjectId },
-    fullname: { type: String },
-    email: { 
-        type: String, 
-        require: true , 
-        unique : true, 
-        match: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+    name: {
+        type: String,
+        required: true,
+        trim: true,
     },
-    password: { type: String, require: true }
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error('Invalid email');
+            }
+        },
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 8,
+    },
+    role: {
+        type: String,
+        // enum: roles,
+        default: 'user',
+    },
+    isEmailVerified: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 var User = mongoose.model('User', userSchema, 'users')

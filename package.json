@@ -1,0 +1,15 @@
+{
+  "name": "ncc-shop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://ops.nccsoft.vn/DefaultCollection/ncc-training-nodejs/_git/ncc-training-nodejs",
+  "author": "hiep.dohoang.ncc@gmail.com",
+  "license": "MIT",
+  "private" : true,
+  "workspaces" : [
+    "*"
+  ],
+  "dependencies": {
+    "workspace": "^0.0.1-preview.1"
+  }
+}

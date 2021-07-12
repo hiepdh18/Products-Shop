@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { create, getAll, getOne, deleteOne, update } = require('../../controllers/type.controller')
 checkAuth = require('../../middlewares/check-auth')
+const createError = require('http-errors')
 
 router.get('/get', getAll)
 router.get('/get/:id', getOne)
@@ -12,5 +13,7 @@ router.delete('/delete', checkAuth, deleteOne)
 router.get('/', (req, res) => {
     res.status(200).send('API for types!!!')
 });
+
+router.use((req, res, next) => next(createError.NotFound()))
 
 module.exports = router
