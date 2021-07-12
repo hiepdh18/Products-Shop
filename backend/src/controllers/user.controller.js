@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const createError = require('http-errors')
-const {userValidation} = require('../validations')
 require('dotenv').config()
 
 exports.signup = (req, res) => {

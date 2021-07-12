@@ -4,9 +4,10 @@ const { signup, signin, deleteUser, update, getAllUser, changePass, resetPass } 
 const checkAuth = require('../../middlewares/check-auth')
 const createError = require('http-errors')
 const {userValidation} = require('../../validations')
+const validate = require('../../middlewares/validate')
 
-router.post('/signin', signin)
-router.post('/signup', signup)
+router.post('/signin', validate(userValidation.createUser),signin)
+router.post('/signup', validate(userValidation.createUser),signup)
 router.post('/update', checkAuth, update)
 router.delete('/delete/:id', checkAuth, deleteUser)
 router.get('/list', checkAuth, getAllUser)
