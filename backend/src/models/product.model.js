@@ -16,9 +16,9 @@ const productSchema = new Schema({
         default: 0
     },
     description: { type: String, default: '' },
-    thumbnail: { type: Schema.Types.ObjectId, ref: 'Image' },
+    thumbnail: { type: String, require : true },
     slide: {
-        type: [{ type: Schema.Types.ObjectId, ref: 'Image' }]
+        type: [{ type: String, require: true }]
     },
     createdBy: {
         type: mongoose.ObjectId,
@@ -34,6 +34,5 @@ const productSchema = new Schema({
 });
 
 var Product = mongoose.model('Product', productSchema, 'products')
-
 
 module.exports = Product

@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const createError = require('http-errors')
+const {userValidation} = require('../validations')
 require('dotenv').config()
 
 exports.signup = (req, res) => {
@@ -128,6 +129,18 @@ exports.getAllUser = (req, res) => {
     .exec()
     .then(users => {
       res.json(users)
+    })
+    .catch(err => {
+      res.json({
+        message: err
+      })
+    })
+}
+exports.getSingleUser = (req,res)=> {
+  userModel.findOne({__id: req.params.id})
+    .exec()
+    .then(user => {
+      res.json(user)
     })
     .catch(err => {
       res.json({

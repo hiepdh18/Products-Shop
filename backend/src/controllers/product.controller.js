@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const { update } = require('../models/product.model')
 const productModel = require('../models/product.model')
-const imageModel = require('../models/image.model')
 const multer = require('multer')
 const util = require('util')
 
@@ -41,33 +40,17 @@ exports.uploadFields = util.promisify(upload.fields([{ name: 'thumbnail', maxCou
 
 exports.createProduct = async (req, res, next) => {
     const files = req.files
-    // console.log(files)
 
-    let slideIds = []
-    const thumbnail = new imageModel({
-        _id: new mongoose.Types.ObjectId(),
-        name: files['thumbnail'].filename,
-        path: files['thumbnail'].path
+    let slideUrls = []
+    let thumbnailUrl = files['slide'][0].path
+    files['slide'].map(file => {
+        slideUrls.push(file.path)
     })
-    const tn = await thumbnail.save()
-    const thumbnailId = tn._id
-    await Promise.all(
-        files['slide'].map(file => {
-            const image = new imageModel({
-                _id: new mongoose.Types.ObjectId(),
-                name: files.filename,
-                path: file.path
-            })
-            image.save()
-            slideIds.push(image._id)
-        })
-    )
-
     const product = new productModel({
         ...req.body,
-        thumbnail: thumbnail._id,
+        thumbnail: thumbnailUrl,
         _id: new mongoose.Types.ObjectId(),
-        slide: slideIds
+        slide: slideUrls
     })
     await product.save()
     res.json(product)
@@ -77,7 +60,6 @@ exports.getProducts = async (req, res, next) => {
     let perPage = 10
 
     productModel.find()
-        .populate('thumbnail')
         // .select('_id name code price')
         .skip((perPage * page) - perPage)
         .limit(perPage)

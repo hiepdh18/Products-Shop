@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 const mongoose = require('mongoose')
 const morgan = require('morgan') 
+const path = require('path')
 require('dotenv').config()
 const createError = require('http-errors')
 
@@ -18,7 +19,7 @@ mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/Shop', { useNewUr
     .catch((err) => {
         console.log("Not Connected to Database ERROR!!!", err);
     });
-
+app.use('/storage',express.static(path.join(__dirname, '../storage')));
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
@@ -36,7 +37,6 @@ app.use((req, res , next) => {
     }
     next()
 })
-
 app.use('/api', router);
 
 // Handler errors
