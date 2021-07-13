@@ -1,19 +1,21 @@
 const express = require('express')
 const router = express.Router()
-const { signup, signin, deleteUser, update, getAllUser, changePass, resetPass } = require('../../controllers/user.controller')
+const { signup, signin, deleteUser, update, getAllUser, changePass, resetPass, getSingleUser } = require('../../controllers/user.controller')
 const checkAuth = require('../../middlewares/check-auth')
 const createError = require('http-errors')
 const {userValidation} = require('../../validations')
 const validate = require('../../middlewares/validate')
 
-router.post('/signin', validate(userValidation.createUser),signin)
-router.post('/signup', validate(userValidation.createUser),signup)
-router.post('/update', checkAuth, update)
-router.delete('/delete/:id', checkAuth, deleteUser)
-router.get('/list', checkAuth, getAllUser)
-router.get('/get/:id',checkAuth, getAllUser)
-router.post('/changePass', checkAuth, changePass)
-router.post('/resetPass', checkAuth, resetPass)
+router.get('/', checkAuth, getAllUser)
+
+router.post('/signup', validate(userValidation.signup),signup)
+router.post('/signin', validate(userValidation.signin),signin)
+
+router.get('/:id',validate(userValidation.getAllUser),checkAuth, getSingleUser)
+router.patch('/:id', validate(userValidation.update), checkAuth, update)
+router.delete('/:id', validate(userValidation.deleteUser), checkAuth, deleteUser)
+router.patch('/changePass/:id', validate(userValidation.changePass), checkAuth, changePass)
+router.post('/resetPass/:id', checkAuth, resetPass)
 
 router.get('/', (req, res) => {
     res.status(200).send('Hello World!')

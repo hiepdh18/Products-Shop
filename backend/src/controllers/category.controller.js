@@ -1,39 +1,50 @@
 const catModel = require('../models/category.model')
 const mongoose = require('mongoose')
+const HttpException = require('http-exception')
 require('dotenv').config()
 
-exports.create = async (req, res) => {
-    const isExits = await catModel.findOne({ name: req.body.name});
 
-    if (isExits) throw new HttpException(400, 'Category has been exits!');
-    var cat = new catModel({
-        _id : new mongoose.Types.ObjectId(),
-        name: req.body.name,
-        category: req.body.category
+exports.createCategory = async (req, res, next) => {
+    catModel.findOne({ name: req.body.name})
+    .exec()
+    .then(category => {
+        if(!category) {
+            var cat = new catModel({
+                _id: new mongoose.Types.ObjectId(),
+                name: req.body.name,
+                category: req.body.category
+            })
+            cat.save();
+            res.json(cat)
+        } else {
+            res.status(409).json("loi")
+        }
     })
-    cat.save();
+    .catch(err => {
+        res.status(400).json({
+            message : err
+        })
+    })
+}
+
+exports.getCategory = async (req, res) => {
+    const cat = await catModel.findOne({_id : req.params.id})
     res.json(cat)
 }
-
-exports.getAll = async (req, res) => {
-    const list = await catModel.find()
-    console.log(process.env.PORT)
-    res.json(list)
-}
-exports.deleteOne = async (req, res) => {
+exports.deleteCategory = async (req, res) => {
     try {
-        await catModel.deleteOne({_id: req.body.id})
+        await catModel.deleteOne({_id: req.params.id})
         res.send('thanh cong');
     } catch (error) {
         res.status(500).send(error);
     }
 }
-exports.getOne = async (req, res) => {
+exports.getCategories = async (req, res) => {
     const list = await catModel.find()
     res.json(list)
 }
 exports.update = async (req, res, next) => {
-    const id = req.body.id
+    const id = req.params.id
     catModel.findOneAndUpdate({ _id: id }, { ...req.body })
         .exec()
         .then(result => {

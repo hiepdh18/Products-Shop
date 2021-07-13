@@ -6,7 +6,7 @@ const util = require('util')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './storage')
+        cb(null, 'storage')
     },
     filename: (req, file, cb) => {
         cb(null, new Date().toISOString() + file.originalname)
@@ -20,40 +20,39 @@ const fileFilter = (req, file, cb) => {
     }
 }
 const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 5
-    },
-    fileFilter: fileFilter
+    dict : './storage'
+    // storage: storage,
+    // limits: {
+    //     fileSize: 1024 * 1024 * 5
+    // },
+    // fileFilter: fileFilter
 })
-
-
 
 exports.welcome = async (req, res, next) => {
     res.status(200).json({
-        message: 'This is api for products!! 🚀🚀🚀'
+        message: 'This is api for products!! 🚀🚀🚀' 
     })
 }
 exports.uploadThumbnail = util.promisify(upload.single('thumbnail'))
 exports.uploadSlide = util.promisify(upload.array('slide', 5))
 exports.uploadFields = util.promisify(upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'slide', maxCount: 5 }]))
 
-exports.createProduct = async (req, res, next) => {
+exports.createProduct = async (req, res, next) => { 
     const files = req.files
 
-    let slideUrls = []
-    let thumbnailUrl = files['slide'][0].path
-    files['slide'].map(file => {
-        slideUrls.push(file.path)
-    })
-    const product = new productModel({
-        ...req.body,
-        thumbnail: thumbnailUrl,
-        _id: new mongoose.Types.ObjectId(),
-        slide: slideUrls
-    })
-    await product.save()
-    res.json(product)
+    // let slideUrls = []
+    // let thumbnailUrl = files['slide'][0].path
+    // files['slide'].map(file => {
+    //     slideUrls.push(file.path)
+    // })
+    // const product = new productModel({
+    //     ...req.body,
+    //     thumbnail: thumbnailUrl,
+    //     _id: new mongoose.Types.ObjectId(),
+    //     slide: slideUrls
+    // })
+    // await product.save()
+    // res.json(product)
 }
 exports.getProducts = async (req, res, next) => {
     let page = req.params.page || 1

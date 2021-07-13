@@ -1,43 +1,20 @@
 const Joi = require('joi');
 const { password, objectId } = require('./custom.validation');
 
-const createUser = {
+const signup = {
     body: Joi.object().keys({
         email: Joi.string().required().email(),
         password: Joi.string().required().custom(password),
         name: Joi.string().required(),
-        // role: Joi.string().required().valid('user', 'admin'),
+        role: Joi.string().required().valid('user', 'admin'),
     }),
-
 };
 
-const getUsers = {
-    query: Joi.object().keys({
-        name: Joi.string(),
-        role: Joi.string(),
-        sortBy: Joi.string(),
-        limit: Joi.number().integer(),
-        page: Joi.number().integer(),
+const signin = {
+    body: Joi.object().keys({
+        email: Joi.string().required().email(),
+        password: Joi.string().required().custom(password),
     }),
-}
-
-const getUser = {
-    params: Joi.object().keys({
-        userId: Joi.string().custom(objectId),
-    }),
-}
-
-const updateUser = {
-    params: Joi.object().keys({
-        id: Joi.required().custom(objectId),
-    }),
-    body: Joi.object()
-        .keys({
-            email: Joi.string().email(),
-            password: Joi.string().custom(password),
-            name: Joi.string(),
-        })
-        .min(1),
 }
 
 const deleteUser = {
@@ -45,11 +22,49 @@ const deleteUser = {
         id: Joi.string().custom(objectId),
     }),
 }
+const update = {
+    params: Joi.object().keys({
+        id: Joi.required().custom(objectId),
+    }),
+    body: Joi.object()
+        .keys({
+            name: Joi.string(),
+        })
+        .min(1),
+}
+
+const getAllUser = {
+
+}
+
+const getSingleUser = {
+    params: Joi.object().keys({
+        id: Joi.string().custom(objectId),
+    }),
+}
+
+const changePass = {
+    params: Joi.object().keys({
+        id: Joi.required().custom(objectId),
+    }),
+    body: Joi.object()
+        .keys({
+            password: Joi.string().custom(password)
+        })
+        .min(1),
+}
+
+const resetPass = {
+
+}
 
 module.exports = {
-    createUser,
-    getUsers,
-    getUser,
-    updateUser,
+    signup,
+    signin,
     deleteUser,
+    update,
+    getAllUser,
+    getSingleUser,
+    changePass,
+    resetPass,
 }

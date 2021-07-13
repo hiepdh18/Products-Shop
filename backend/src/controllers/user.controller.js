@@ -110,7 +110,7 @@ exports.signin = (req, res, next) => {
 }
 
 exports.update = (req, res, next) => {
-  userModel.findOneAndUpdate({ _id: req.body.id }, { fullname: req.body.fullname })
+  userModel.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name })
     .exec()
     .then(user => {
       if (user) {
@@ -154,7 +154,7 @@ exports.changePass = (req, res) => {
         error: err
       })
     } else {
-      userModel.findOneAndUpdate({ _id: req.body.id }, { password : hash })
+      userModel.findOneAndUpdate({ _id: req.params.id }, { password : hash })
         .exec()
         .then(user => {
           if (user) {
@@ -175,6 +175,32 @@ exports.changePass = (req, res) => {
 }
 
 exports.resetPass = (req, res) => {
-
-  res.json('user')
+  const newPass = "helo"
+  bcrypt.hash(newPass, 10, (err, hash) => {
+    if (err) {
+      res.status(500).json({
+        error: err
+      })
+    } else {
+      userModel.findOneAndUpdate({ _id: req.params.id }, { password: hash })
+        .exec()
+        .then(user => {
+          if (user) {
+            res.status(200).json({
+              message : "reset successful!!!",
+              password : newPass
+            })
+          } else {
+            res.status(404).json({
+              message: "404 not found!!!",
+            })
+          }
+        })
+        .catch(err => {
+          res.json({
+            message: err
+          })
+        })
+    }
+  })
 }
