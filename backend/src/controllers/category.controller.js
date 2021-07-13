@@ -43,6 +43,12 @@ exports.getCategories = async (req, res) => {
     const list = await catModel.find()
     res.json(list)
 }
+
+exports.getCategoriesByType = async (req, res) => {
+    const list = await catModel.find({category : req.body.type})
+    res.json(list)
+}
+
 exports.update = async (req, res, next) => {
     const id = req.params.id
     catModel.findOneAndUpdate({ _id: id }, { ...req.body })
@@ -53,5 +59,4 @@ exports.update = async (req, res, next) => {
         .catch(err => {
             console.log('loi')
         })
-
 }
