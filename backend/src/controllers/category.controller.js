@@ -22,7 +22,7 @@ exports.getAll = async (req, res) => {
 }
 exports.deleteOne = async (req, res) => {
     try {
-        await catModel.deleteOne({ _id: req.body.id })
+        await catModel.deleteOne({ _id: req.params.id })
         res.send('thanh cong');
     } catch (error) {
         res.status(500).send(error);
@@ -33,7 +33,7 @@ exports.getOne = async (req, res) => {
     res.json(list)
 }
 exports.update = async (req, res, next) => {
-    const id = req.body.id
+    const id = req.params.id
     catModel.findOneAndUpdate({ _id: id }, { ...req.body })
         .exec()
         .then(result => {

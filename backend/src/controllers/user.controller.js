@@ -7,7 +7,7 @@ const {userValidation} = require('../validations')
 require('dotenv').config()
 
 exports.signup = (req, res) => {
-  const {name, email, password} = req.body 
+  const {name, email, password, role} = req.body 
   if(!name || !email || !password) throw createError.BadRequest()
   userModel.findOne({ email: email })
     .exec()
@@ -27,6 +27,7 @@ exports.signup = (req, res) => {
               _id: mongoose.Types.ObjectId(),
               name: name,
               email: email,
+              role : role,
               password: hash
             })
             user.save()
@@ -78,8 +79,9 @@ exports.signin = (req, res, next) => {
             if (result) {
               const token = jwt.sign(
                 {
-                  userId: user._id,
-                  email: user.email
+                  id: user._id,
+                  email: user.email,
+                  role: user.role
                 },
                 process.env.JWT_KEY,
                 {
@@ -111,7 +113,7 @@ exports.signin = (req, res, next) => {
 }
 
 exports.update = (req, res, next) => {
-  userModel.findOneAndUpdate({ _id: req.body.id }, { fullname: req.body.fullname })
+  userModel.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name , role:"user" })
     .exec()
     .then(user => {
       if (user) {
@@ -176,6 +178,5 @@ exports.changePass = (req, res) => {
 }
 
 exports.resetPass = (req, res) => {
-
   res.json('user')
 }
