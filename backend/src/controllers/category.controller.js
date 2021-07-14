@@ -3,11 +3,11 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 exports.create = async (req, res) => {
-    const isExits = await catModel.findOne({ name: req.body.name});
+    const isExits = await catModel.findOne({ name: req.body.name });
 
     if (isExits) throw new HttpException(400, 'Category has been exits!');
     var cat = new catModel({
-        _id : new mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         category: req.body.category
     })
@@ -22,7 +22,7 @@ exports.getAll = async (req, res) => {
 }
 exports.deleteOne = async (req, res) => {
     try {
-        await catModel.deleteOne({_id: req.body.id})
+        await catModel.deleteOne({ _id: req.body.id })
         res.send('thanh cong');
     } catch (error) {
         res.status(500).send(error);
