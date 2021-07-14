@@ -28,11 +28,6 @@ const upload = multer({
     fileFilter: fileFilter
 })
 
-exports.welcome = async (req, res, next) => {
-    res.status(200).json({
-        message: 'This is api for products!! 🚀🚀🚀' 
-    })
-}
 exports.uploadThumbnail = util.promisify(upload.single('thumbnail'))
 exports.uploadSlide = util.promisify(upload.array('slide', 5))
 exports.uploadFields = util.promisify(upload.fields([{ name: 'thumbnail', maxCount: 1 }, { name: 'slide', maxCount: 5 }]))
@@ -93,7 +88,7 @@ exports.getProductsByCat = async (req, res, next) => {
         })
 }
 exports.deleteProduct = async (req, res, next) => {
-    await productModel.findOneAndDelete({ _id: req.body.id })
+    await productModel.findOneAndDelete({ _id: req.params.id })
     res.json("thanh cong")
 }
 exports.getProduct = (req, res, next) => {

@@ -1,11 +1,11 @@
 const typeModel = require('../models/type.model')
 const mongoose = require('mongoose')
 
-exports.create = async (req, res, next) => {
+exports.createType = async (req, res, next) => {
     const isExits = await typeModel.findOne({ name: req.body.name });
     if (isExits) throw new HttpException(400, 'Type has been exits!');
     var type = new typeModel({
-        _id : new mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         slug: req.body.name
     })
@@ -14,12 +14,13 @@ exports.create = async (req, res, next) => {
 }
 exports.getType = async (req, res, next) => {
     const id = req.params.id
-    const type = await typeModel.findOne({_id : id })
+    const type = await typeModel.findOne({ _id: id })
     res.json(type)
 }
-exports.update = async (req, res, next) => {
+exports.updateType = async (req, res, next) => {
     const id = req.params.id
-    typeModel.findOneAndUpdate({_id : id},{...req.body})
+    typeModel.findOneAndUpdate({ _id: id }, { ...req.body })
+
         .exec()
         .then(result => {
             res.json(result)
@@ -29,11 +30,21 @@ exports.update = async (req, res, next) => {
         })
 
 }
+
 exports.deleteType = async (req, res, next) => {
-    await typeModel.findOneAndDelete({_id: req.params.id})
-    res.json({message: "thanh cong"})
+    try {
+        await typeModel.findOneAndDelete({ _id: req.params.id })
+        res.json({ message: "thanh cong" })
+    } catch (error) {
+        console.error(error);
+        res.status(404).json("loi")
+    }
 }
 exports.getTypes = async (req, res, next) => {
-    const types = await typeModel.find({})
-    res.json(types)
+    try {
+        const type = await typeModel.find()
+        res.json(type)
+    } catch (error) {
+        console.error(error);
+    }
 }

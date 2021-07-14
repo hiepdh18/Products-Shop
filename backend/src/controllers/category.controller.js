@@ -1,8 +1,6 @@
 const catModel = require('../models/category.model')
 const mongoose = require('mongoose')
-const HttpException = require('http-exception')
 require('dotenv').config()
-
 
 exports.createCategory = async (req, res, next) => {
     catModel.findOne({ name: req.body.name})
@@ -24,6 +22,7 @@ exports.createCategory = async (req, res, next) => {
         res.status(400).json({
             message : err
         })
+
     })
 }
 
@@ -34,6 +33,7 @@ exports.getCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     try {
         await catModel.deleteOne({_id: req.params.id})
+ep.dohoang.authenticate
         res.send('thanh cong');
     } catch (error) {
         res.status(500).send(error);
