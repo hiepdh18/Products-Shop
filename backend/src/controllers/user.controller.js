@@ -6,8 +6,8 @@ const createError = require('http-errors')
 require('dotenv').config()
 
 exports.signup = (req, res) => {
-  const {name, email, password, role} = req.body 
-  if(!name || !email || !password) throw createError.BadRequest()
+  const { name, email, password, role } = req.body
+  if (!name || !email || !password) throw createError.BadRequest()
   userModel.findOne({ email: email })
     .exec()
     .then(user => {
@@ -26,7 +26,7 @@ exports.signup = (req, res) => {
               _id: mongoose.Types.ObjectId(),
               name: name,
               email: email,
-              role : role,
+              role: role,
               password: hash
             })
             user.save()
@@ -111,8 +111,8 @@ exports.signin = (req, res, next) => {
     })
 }
 
-exports.update = (req, res, next) => {
-  userModel.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name, role :req.body.role})
+exports.updateUser = (req, res, next) => {
+  userModel.findOneAndUpdate({ _id: req.params.id }, { name: req.body.name, role: req.body.role })
     .exec()
     .then(user => {
       if (user) {
@@ -125,8 +125,9 @@ exports.update = (req, res, next) => {
     })
     .catch()
 }
-exports.getAllUser = (req, res) => {
+exports.getUsers = (req, res) => {
   userModel.find()
+    .select('_id name')
     .exec()
     .then(users => {
       res.json(users)
@@ -137,8 +138,9 @@ exports.getAllUser = (req, res) => {
       })
     })
 }
-exports.getSingleUser = (req,res)=> {
-  userModel.findOne({__id: req.params.id})
+exports.getUser = async (req, res) => {
+  userModel.findById(req.params.id)
+    .select('_id name email role password')
     .exec()
     .then(user => {
       res.json(user)
@@ -156,7 +158,7 @@ exports.changePass = (req, res) => {
         error: err
       })
     } else {
-      userModel.findOneAndUpdate({ _id: req.params.id }, { password : hash })
+      userModel.findOneAndUpdate({ _id: req.params.id }, { password: hash })
         .exec()
         .then(user => {
           if (user) {
@@ -168,7 +170,7 @@ exports.changePass = (req, res) => {
           }
         })
         .catch(err => {
-          res. json({
+          res.json({
             message: err
           })
         })
@@ -177,7 +179,7 @@ exports.changePass = (req, res) => {
 }
 
 exports.resetPass = (req, res) => {
-  const newPass = "helo"
+  const newPass = "default.123"
   bcrypt.hash(newPass, 10, (err, hash) => {
     if (err) {
       res.status(500).json({
@@ -189,8 +191,8 @@ exports.resetPass = (req, res) => {
         .then(user => {
           if (user) {
             res.status(200).json({
-              message : "reset successful!!!",
-              password : newPass
+              message: "reset successful!!!",
+              password: newPass
             })
           } else {
             res.status(404).json({

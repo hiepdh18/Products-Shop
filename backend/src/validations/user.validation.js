@@ -6,7 +6,7 @@ const signup = {
         email: Joi.string().required().email(),
         password: Joi.string().required().custom(password),
         name: Joi.string().required(),
-        role: Joi.string().required().valid('user', 'admin'),
+        role: Joi.string().valid('user', 'admin'),
     }),
 };
 
@@ -22,7 +22,7 @@ const deleteUser = {
         id: Joi.string().custom(objectId),
     }),
 }
-const update = {
+const updateUser = {
     params: Joi.object().keys({
         id: Joi.required().custom(objectId),
     }),
@@ -33,13 +33,13 @@ const update = {
         .min(1),
 }
 
-const getAllUser = {
-
+const getUsers = {
+   
 }
 
-const getSingleUser = {
+const getUser = {
     params: Joi.object().keys({
-        id: Joi.string().custom(objectId),
+        id: Joi.string().required().custom(objectId),
     }),
 }
 
@@ -47,24 +47,25 @@ const changePass = {
     params: Joi.object().keys({
         id: Joi.required().custom(objectId),
     }),
-    body: Joi.object()
-        .keys({
-            password: Joi.string().custom(password)
-        })
+    body: Joi.object().keys({
+        password: Joi.string().custom(password)
+    })
         .min(1),
 }
 
 const resetPass = {
-
+    params: Joi.object().keys({
+        id: Joi.required().custom(objectId),
+    })
 }
 
 module.exports = {
     signup,
     signin,
     deleteUser,
-    update,
-    getAllUser,
-    getSingleUser,
+    updateUser,
+    getUsers,
+    getUser,
     changePass,
     resetPass,
 }
