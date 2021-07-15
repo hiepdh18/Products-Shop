@@ -19,6 +19,8 @@ mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost/Shop', { useNewUr
     .catch((err) => {
         console.log("Not Connected to Database ERROR!!!", err);
     });
+mongoose.set('useFindAndModify', false);
+
 app.use('/uploads',express.static(path.join(__dirname, '../uploads')));
 app.use(morgan('dev'))
 app.use(express.json())

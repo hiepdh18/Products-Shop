@@ -33,7 +33,6 @@ exports.getCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     try {
         await catModel.deleteOne({_id: req.params.id})
-ep.dohoang.authenticate
         res.send('thanh cong');
     } catch (error) {
         res.status(500).send(error);
