@@ -1,1 +1,3 @@
-export const authReducer = (state, actions)
+export const authReducer = (state, action) => {
+    
+}

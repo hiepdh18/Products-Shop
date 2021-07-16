@@ -42,7 +42,7 @@ exports.signup = async (req, res) => {
           },
           process.env.JWT_KEY,
           {
-            expiresIn: "1h"
+            expiresIn: "10h"
           }
         )
         res.status(200).json({
@@ -50,7 +50,6 @@ exports.signup = async (req, res) => {
           message: 'User created successfully!',
           accessToken
         })
-
       }
     })
   } catch (err) {

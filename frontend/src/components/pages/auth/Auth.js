@@ -7,7 +7,7 @@ function Auth({ authRoute }) {
     let body = (
         <>
             <h2>NCC-Shop</h2>
-            <h5>we are awsome!!! 🚀🚀🚀🚀 </h5>
+            <h5>we're awsome!!! 🚀🚀🚀🚀 </h5>
             {authRoute === 'signup' && <SignupForm />}
             {authRoute === 'signin' && <SigninForm />}
         </>

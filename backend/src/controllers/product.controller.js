@@ -49,7 +49,7 @@ exports.createProduct = async (req, res, next) => {
 exports.getProducts = async (req, res, next) => {
     let page = req.params.page || 1
     let perPage = 10
-    productModel.find()
+    ProductModel.find()
         .select('_id name code category price')
         .skip((perPage * page) - perPage)
         .limit(perPage)
