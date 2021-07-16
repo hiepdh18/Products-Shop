@@ -5,48 +5,61 @@ const jwt = require('jsonwebtoken')
 const createError = require('http-errors')
 require('dotenv').config()
 
-exports.signup = (req, res) => {
+//  throw createError.BadRequest()
+
+exports.signup = async (req, res) => {
   const { name, email, password, role } = req.body
-  if (!name || !email || !password) throw createError.BadRequest()
-  userModel.findOne({ email: email })
-    .exec()
-    .then(user => {
-      if (user) {
-        res.status(409).json({
-          message: "Email exists!!!!!"
-        })
+  // Simple validation
+  if (!name || !email || !password)
+    return res
+      .status(400)
+      .json({ success: false, message: 'Missing username and/or password' })
+  try {
+    const user = await userModel.findOne({ email })
+    if (user) return res
+      .status(400)
+      .json({ success: false, message: 'Username already taken' })
+    // All good
+    bcrypt.hash(password, 10, async (err, hash) => {
+      if (err) {
+        return res
+          .status(400)
+          .json({ success: false, message: 'failed to hass password' })
       } else {
-        bcrypt.hash(password, 10, (err, hash) => {
-          if (err) {
-            res.status(500).json({
-              error: err
-            })
-          } else {
-            const user = new userModel({
-              _id: mongoose.Types.ObjectId(),
-              name: name,
-              email: email,
-              role: role,
-              password: hash
-            })
-            user.save()
-              .then(result => {
-                res.status(201).json({
-                  message: "User created!!!"
-                })
-              })
-              .catch(err => {
-                res.status(500).json({
-                  message: err
-                })
-              })
-          }
+        const user = new userModel({
+          _id: mongoose.Types.ObjectId(),
+          name,
+          email,
+          role,
+          password: hash
         })
+        await user.save()
+        const accessToken = jwt.sign(
+          {
+            id: user._id,
+            email: user.email,
+            role: user.role
+          },
+          process.env.JWT_KEY,
+          {
+            expiresIn: "1h"
+          }
+        )
+        res.status(200).json({
+          success: true,
+          message: 'User created successfully!',
+          accessToken
+        })
+
       }
     })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ success: false, message: 'Internal server error' })
+  }
 }
 
-exports.deleteUser = (req, res, next) => {
+exports.deleteUser = async (req, res, next) => {
   userModel.remove({ _id: req.params.id })
     .exec()
     .then(result => {
@@ -61,54 +74,58 @@ exports.deleteUser = (req, res, next) => {
     })
 }
 
-exports.signin = (req, res, next) => {
-  userModel.findOne({ email: req.body.email })
-    .exec()
-    .then(user => {
-      if (user) {
-        bcrypt.compare(
-          req.body.password,
-          user.password,
-          (err, result) => {
-            if (err) {
-              res.status(401).json({
-                message: err
-              })
+exports.signin = async (req, res, next) => {
+  const { email, password } = req.body
+  // Simple validation
+  if (!email || !password)
+    return res
+      .status(400)
+      .json({ success: false, message: 'Missing username and/or password' })
+  try {
+    // Check for existing user
+    const user = await userModel.findOne({ email })
+    if (!user)
+      return res
+        .status(400)
+        .json({ success: false, message: 'Incorrect username or password' })
+    // Username found
+    bcrypt.compare(
+      password,
+      user.password,
+      (err, result) => {
+        if (err) {
+          return res
+            .status(400)
+            .json({ success: false, message: 'Incorrect username or password' })
+        }
+        // All good, return a token
+        if (result) {
+          const accessToken = jwt.sign(
+            {
+              id: user._id,
+              email: user.email,
+              role: user.role
+            },
+            process.env.JWT_KEY,
+            {
+              expiresIn: "1h"
             }
-            if (result) {
-              const token = jwt.sign(
-                {
-                  id: user._id,
-                  email: user.email,
-                  role: user.role
-                },
-                process.env.JWT_KEY,
-                {
-                  expiresIn: "1h"
-                }
-              )
-              res.status(200).json({
-                message: "Auth successful!!!",
-                token: token
-              })
-            } else {
-              res.json({
-                message: "Auth failed!!!"
-              })
-            }
-          }
-        )
-      } else {
-        res.status(409).json({
-          message: "Auth failed!!!"
-        })
+          )
+          res.status(200).json({
+            success: true,
+            message: 'User logged in successfully!',
+            accessToken
+          })
+        } else return res
+          .status(400)
+          .json({ success: false, message: 'Incorrect username or password' })
       }
-    })
-    .catch(err => {
-      res.status(500).json({
-        message: err
-      })
-    })
+    )
+
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ success: false, message: 'Internal server error' })
+  }
 }
 
 exports.updateUser = (req, res, next) => {
