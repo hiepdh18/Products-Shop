@@ -1,20 +1,18 @@
 import { createContext } from "react";
-import axios from "axios";
 
-import { API_URL, LOCAL_STORAGE_TOKEN_NAME } from "../constans/constants";
-
+import { LOCAL_STORAGE_TOKEN_NAME } from "../constans/constants";
+import userApi from '../api/userApi'
 export const AuthContext = createContext()
 
 const AuthContextProvider = ({ children }) => {
     const signinUser = async userForm => {
         try {
-            const response = await axios.post(`${API_URL}/user/signin`, userForm)
-            if (response.data.success)
-                localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.data.accessToken)
-            return response.data;
+            const response = await userApi.signin(userForm)
+            if (response.success)
+                localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.accessToken)
+            return response
         } catch (err) {
-            if (err.response.data) return err.response.data
-            else return { success: false, message: err.message }
+            return err
         }
     }
     // data

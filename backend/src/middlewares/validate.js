@@ -13,9 +13,9 @@ const validate = (schema) => (req, res, next) => {
         .validate(object)
 
     if (error) {
-        const errorMessage = error.details.map((details) => details.message).join(', ')
-        console.log(error)
-        return next(createError.BadRequest({errorMessage}))
+        const message = error.details.map((details) => details.message).join(', ')
+        console.log(message)
+        return next(createError.BadRequest({ message, success:false}))
     }
     Object.assign(req, value)
     return next()

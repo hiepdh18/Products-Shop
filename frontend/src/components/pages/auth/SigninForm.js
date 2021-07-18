@@ -26,15 +26,14 @@ function SigninForm() {
         event.preventDefault()
         try {
             const signinData = await signinUser(signinForm)
-            console.log(signinData);
-
             if(signinData.success){
+                alert(signinData.message)
                 history.push('/dashboard')
             } else {
-                console.log('loi')
+                alert(signinData.message)
             }
         } catch (error) {
-            console.log(error);
+            // alert(error)
         }
     }
     return (

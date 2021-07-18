@@ -1,5 +1,5 @@
 import './App.css'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   Route,
   BrowserRouter as Router,
@@ -8,7 +8,6 @@ import {
 
 import Auth from './components/pages/auth/Auth'
 import AuthContextProvider from './contexts/AuthContext';
-import productApi from './api/productApi';
 import Dashboard from './components/pages/dashboard/Dashboard';
 
 
