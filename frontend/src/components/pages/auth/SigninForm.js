@@ -1,15 +1,16 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import userApi from '../../../api/userApi';
 
-import { AuthContext } from '../../../contexts/AuthContext'
+// import { AuthContext } from '../../../contexts/AuthContext'
 
 
 function SigninForm() {
 
     // context
-    const {signinUser} = useContext(AuthContext)
-    
+    // const {signinUser} = useContext(AuthContext)
+
     // Router
     const history = useHistory()
 
@@ -25,15 +26,16 @@ function SigninForm() {
     const signin = async event => {
         event.preventDefault()
         try {
-            const signinData = await signinUser(signinForm)
-            if(signinData.success){
+            // const signinData = await signinUser(signinForm)
+            const signinData = await userApi.signin(signinForm)
+            if (signinData.success) {
                 alert(signinData.message)
                 history.push('/dashboard')
             } else {
                 alert(signinData.message)
             }
         } catch (error) {
-            // alert(error)
+            alert(error)
         }
     }
     return (

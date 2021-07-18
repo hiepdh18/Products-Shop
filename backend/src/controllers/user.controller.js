@@ -6,6 +6,22 @@ const createError = require('http-errors')
 require('dotenv').config()
 
 //  throw createError.BadRequest()
+exports.checkUser = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userData.id).select('-password')
+    if (!user)
+      return res
+        .status(400)
+        .json({ success: false, message: 'user not found!!' })
+    res.json({ success: true, user })
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      success: false,
+      message: "Internal server error!!!"
+    })
+  }
+}
 
 exports.signup = async (req, res) => {
   const { name, email, password, role } = req.body

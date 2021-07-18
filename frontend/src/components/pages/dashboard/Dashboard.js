@@ -3,7 +3,7 @@ import React from 'react'
 function Dashboard() {
     return (
         <div>
-            Trang dashboard!!!
+            <p>Trang dashboard!!!</p>
             
         </div>
     )

@@ -5,6 +5,8 @@ import userApi from '../api/userApi'
 export const AuthContext = createContext()
 
 const AuthContextProvider = ({ children }) => {
+
+    // const loadUser = async 
     const signinUser = async userForm => {
         try {
             const response = await userApi.signin(userForm)
@@ -15,7 +17,7 @@ const AuthContextProvider = ({ children }) => {
             return err
         }
     }
-    // data
+    // data 
     const authContextData = { signinUser }
     // return
     return (
