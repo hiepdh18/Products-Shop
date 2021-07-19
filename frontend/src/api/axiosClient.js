@@ -11,11 +11,11 @@ const axiosClient = axios.create({
     paramsSerializer: params => queryString.stringify(params)
 })
 axiosClient.interceptors.request.use(async config => {
-    //handle reqquest
+    //handle 
     if (localStorage[LOCAL_STORAGE_TOKEN_NAME]){
         const token = localStorage[LOCAL_STORAGE_TOKEN_NAME]
-        config.headers.Authorization = `Bearer ${token}`;
-    }
+        config.headers.Authorization = `Bearer ${token}`
+    } else config.headers.Authorization = null
     return config
 })
 axiosClient.interceptors.response.use(
@@ -25,7 +25,7 @@ axiosClient.interceptors.response.use(
         return response
     },
     err => {
-       return err.response.data.message
+       return err.response.data
     })
 
 export default axiosClient

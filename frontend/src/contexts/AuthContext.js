@@ -1,24 +1,53 @@
-import { createContext } from "react";
+import { createContext, useReducer, useEffect } from "react";
 
-import { LOCAL_STORAGE_TOKEN_NAME } from "../constans/constants";
+import { LOCAL_STORAGE_TOKEN_NAME, TYPE } from "../constans/constants";
 import userApi from '../api/userApi'
+import { authReducer } from "../reducers/authReducer";
+
 export const AuthContext = createContext()
 
 const AuthContextProvider = ({ children }) => {
 
-    // const loadUser = async 
-    const signinUser = async userForm => {
+    const [authState, dispatch] = useReducer(authReducer, {
+        isAuthenticate: false,
+        user: null,
+        authLoading: true
+    })
+    // load user's info
+    const loadUser = async () => {
         try {
-            const response = await userApi.signin(userForm)
-            if (response.success)
-                localStorage.setItem(LOCAL_STORAGE_TOKEN_NAME, response.accessToken)
-            return response
-        } catch (err) {
-            return err
+            const response = await userApi.loadUser()
+            if (response.success) {
+                dispatch({
+                    type: TYPE.SET_AUTH,
+                    payload: {
+                        isAuthenticated: true,
+                        user: response.user
+                    }
+                })
+            } else 
+                dispatch({
+                    type: TYPE.SET_AUTH,
+                    payload: {
+                        isAuthenticated: false,
+                        user: null
+                    }
+                })
+        } catch (error) {
+            localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME)
+            dispatch({
+                type: TYPE.SET_AUTH,
+                payload: {
+                    isAuthenticated: false,
+                    user: null
+                }
+            })
         }
     }
+    useEffect(() => loadUser(), [])
+
     // data 
-    const authContextData = { signinUser }
+    const authContextData = { loadUser, authState }
     // return
     return (
         <AuthContext.Provider value={authContextData}>

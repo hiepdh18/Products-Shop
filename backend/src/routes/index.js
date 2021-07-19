@@ -12,7 +12,6 @@ router.use('/user', userRoutes)
 router.use('/product', productRoutes)
 router.use('/category', categoryRoutes)
 
-
 router.get('/', (req, res) => {
     res.status(200).json('Welcome to our API!!! 🚀🚀🚀🚀')
 })

@@ -5,8 +5,17 @@ const userApi = {
         const url = '/user/signin'
         try {
             return await axiosClient.post(url, userForm)
-        } catch (error) {
-            return error
+        } catch (err) {
+            // return err
+        }
+    },
+    loadUser: async () => {
+        const url = '/user/check'
+        try {
+            return await axiosClient.get(url)
+        }
+        catch (err) {
+            // return err
         }
     }
 }

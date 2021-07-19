@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+
 import userApi from '../../../api/userApi';
+import { LOCAL_STORAGE_TOKEN_NAME } from '../../../constans/constants';
+import { AuthContext } from '../../../contexts/AuthContext'
+import AlertMessage from '../../layout/AlertMessage';
+
 
 // import { AuthContext } from '../../../contexts/AuthContext'
-
 
 function SigninForm() {
 
     // context
-    // const {signinUser} = useContext(AuthContext)
+    const { authState, loadUser } = useContext(AuthContext)
 
     // Router
     const history = useHistory()
@@ -20,6 +24,7 @@ function SigninForm() {
         password: ''
     })
     const { email, password } = signinForm
+    const [alert, setAlert] = useState(null)
 
     // function interact to form
     const onChangeSigninForm = event => setSigninForm({ ...signinForm, [event.target.name]: event.target.value })
@@ -28,19 +33,30 @@ function SigninForm() {
         try {
             // const signinData = await signinUser(signinForm)
             const signinData = await userApi.signin(signinForm)
+            console.log(signinData)
             if (signinData.success) {
-                alert(signinData.message)
-                history.push('/dashboard')
+                localStorage.setItem(
+                    LOCAL_STORAGE_TOKEN_NAME,
+                    signinData.accessToken
+                )
+                await loadUser()
             } else {
-                alert(signinData.message)
+               setAlert({
+                   type:'danger',
+                   message : signinData.message
+               })
+               setTimeout(() => {
+                   setAlert(null)
+               }, 5000);
             }
         } catch (error) {
-            alert(error)
+          
         }
     }
     return (
         <>
             <Form onSubmit={signin}>
+                <AlertMessage info={alert}></AlertMessage>
                 <Form.Group>
                     <Form.Control
                         type='text'
