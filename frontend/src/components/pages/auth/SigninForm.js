@@ -1,22 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import userApi from '../../../api/userApi';
 import { LOCAL_STORAGE_TOKEN_NAME } from '../../../constans/constants';
 import { AuthContext } from '../../../contexts/AuthContext'
 import AlertMessage from '../../layout/AlertMessage';
 
-
-// import { AuthContext } from '../../../contexts/AuthContext'
-
 function SigninForm() {
 
     // context
-    const { authState, loadUser } = useContext(AuthContext)
-
-    // Router
-    const history = useHistory()
+    const {  loadUser } = useContext(AuthContext)
 
     // Local state
     const [signinForm, setSigninForm] = useState({
@@ -31,9 +25,7 @@ function SigninForm() {
     const signin = async event => {
         event.preventDefault()
         try {
-            // const signinData = await signinUser(signinForm)
             const signinData = await userApi.signin(signinForm)
-            console.log(signinData)
             if (signinData.success) {
                 localStorage.setItem(
                     LOCAL_STORAGE_TOKEN_NAME,
@@ -42,7 +34,7 @@ function SigninForm() {
                 await loadUser()
             } else {
                setAlert({
-                   type:'danger',
+                   type:'warning',
                    message : signinData.message
                })
                setTimeout(() => {

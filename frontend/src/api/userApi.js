@@ -9,6 +9,14 @@ const userApi = {
             // return err
         }
     },
+    signup: async (userForm) => {
+        const url = '/user/signup'
+        try {
+            return await axiosClient.post(url, userForm)
+        } catch (err) {
+            // return err
+        }
+    },
     loadUser: async () => {
         const url = '/user/check'
         try {

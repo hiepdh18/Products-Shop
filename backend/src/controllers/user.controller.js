@@ -29,12 +29,12 @@ exports.signup = async (req, res) => {
   if (!name || !email || !password)
     return res
       .status(400)
-      .json({ success: false, message: 'Missing username and/or password' })
+      .json({ success: false, message: 'Missing email and/or password' })
   try {
     const user = await userModel.findOne({ email })
     if (user) return res
       .status(400)
-      .json({ success: false, message: 'Username already taken' })
+      .json({ success: false, message: 'Email already taken' })
     // All good
     bcrypt.hash(password, 10, async (err, hash) => {
       if (err) {
