@@ -7,7 +7,6 @@ import { authReducer } from "../reducers/authReducer";
 export const AuthContext = createContext()
 
 const AuthContextProvider = ({ children }) => {
-
     const [authState, dispatch] = useReducer(authReducer, {
         isAuthenticate: false,
         user: null,

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
 import './Navbar.css'
 import { AiOutlineLogout, AiOutlineLogin } from "react-icons/ai";

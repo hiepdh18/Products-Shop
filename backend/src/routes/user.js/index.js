@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const {
+    signout,
     signup,
     signin,
     deleteUser,
@@ -18,6 +19,7 @@ const createError = require('http-errors')
 const validate = require('../../middlewares/validate')
 const { userValidation } = require('../../validations')
 
+router.get('/signout', signout)
 router.get('/check', checkAuth, checkUser)
 router.get('/', validate(userValidation.getUsers), checkAuth, getUsers)
 router.get('/:id', validate(userValidation.getUser), checkAuth, getUser)

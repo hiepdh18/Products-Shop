@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 const util = require('util')
 const multer = require('multer')
-
-const { update } = require('../models/product.model')
 const ProductModel = require('../models/product.model')
 
 // config for upload images
@@ -50,7 +48,8 @@ exports.getProducts = async (req, res, next) => {
     let page = req.params.page || 1
     let perPage = 10
     ProductModel.find()
-        .select('_id name category price thumbnail')
+        .populate('category')
+        .select('_id name category price code thumbnail')
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec()
@@ -98,7 +97,7 @@ exports.deleteProduct = async (req, res, next) => {
 }
 exports.getProduct = async (req, res, next) => {
     const id = req.params.id
-    productModel.findById(id)
+    ProductModel.findById(id)
         .then(product =>
             res.status(200).json(product)
         )
@@ -122,7 +121,7 @@ exports.updateProduct = async (req, res) => {
     }
     try {
         if (thumbnailUrl)
-            await productModel.findOneAndUpdate(
+            await ProductModel.findOneAndUpdate(
                 { _id: req.params.id },
                 {
                     ...req.body,
@@ -130,11 +129,10 @@ exports.updateProduct = async (req, res) => {
                     slide: slideUrls
                 })
         else
-            await productModel.findOneAndUpdate(
+            await ProductModel.findOneAndUpdate(
                 { _id: req.params.id },
                 {
                     ...req.body,
-                    thumbnail: thumbnailUrl,
                     slide: slideUrls
                 })
         res.json({

@@ -22,7 +22,6 @@ function ProtectedRoute({ component: Component, ...rest }) {
                 render={props =>
                     isAuthenticated ? (
                         <>
-                            {/* <NavbarMenu /> */}
                             <Component {...rest} {...props} />
                         </>
                     ) : (

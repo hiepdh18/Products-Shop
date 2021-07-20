@@ -1,6 +1,14 @@
 import axiosClient from "./axiosClient"
 
 const userApi = {
+    signout : async () => {
+        const url = '/user/signout'
+        try {
+            return await axiosClient.get(url)
+        } catch (err) {
+            // return err
+        }
+    },
     signin: async (userForm) => {
         const url = '/user/signin'
         try {

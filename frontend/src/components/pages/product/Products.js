@@ -1,80 +1,43 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import productApi from '../../../api/productApi'
 import './products.css'
 import { STATIC_URL } from '../../../constans/constants'
-import categoryApi from '../../../api/categoryApi'
-import typeApi from '../../../api/typeApi'
-import Picker from 'react-picker'
+import { DataContext } from '../../../contexts/DataContext'
 
-
-function Products() {
-
-    const [types, setTypes] = useState([])
-    const [categories, setCategories] = useState([])
-    const [products, setProducts] = useState([])
+function Products({ page, handle }) {
+    const {
+        dataState: { types, categories, products },
+        loadCategories,
+        loadProducts
+    } = useContext(DataContext)
+    
     let typeId
     let catId
 
-    const getTypes = async () => {
-        try {
-            const t = await typeApi.getTypes();
-            setTypes(t)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const getCategories = async () => {
-        try {
-            const cats = await categoryApi.getCategories(typeId)
-            setCategories(cats)
-            console.log(categories)
-
-        } catch (error) {
-
-        }
-    }
-
-    const getProducts = async () => {
-        try {
-            const p = await productApi.getProducts(catId, 1)
-            setProducts(p)
-            console.log(products)
-        } catch (error) {
-
-        }
-    }
     const typeSelectHandle = (event) => {
         typeId = event.target.value
-        getCategories()
+        loadCategories(typeId)
+        console.log(categories)
+        console.log(typeId)
     }
-    const catSelectHandle =(event) => {
+    const catSelectHandle = (event) => {
         console.log(event.target.value)
         catId = event.target.value
-        getProducts()
+        loadProducts(catId)
     }
 
-    useEffect(() => {
-        getTypes()
-    }, [])
-
-    // useEffect(() => {
-    //     getCategories()
-    // }, [])
-  
-
-    // useEffect(() => {
-    //     getProducts()
-    // }, [])
-
-
+    const handleNextBtn = (e) => {
+        handle(page + 1)
+    }
+    const handlePrevBtn = (e) => {
+        handle(page - 1)
+    }
 
     return (
         <div className="container">
             <select className="browser-default custom-select" onChange={typeSelectHandle} >
                 {
-                    types.map(type =>(
+                    types.map(type => (
                         <option key={type._id} value={type._id}>{type.name}</option>
                     ))
                 }
@@ -91,18 +54,33 @@ function Products() {
                 {
                     products.map(product => (
                         <div className="card" key={product._id}>
-                            <Link to={`/product/${product._id}`}>
+                            <Link to={`/detail/${product._id}`}>
                                 <img src={STATIC_URL + product.thumbnail} alt="" />
                             </Link>
                             <div className="box">
                                 <h3 title={product.name}>
-                                    <Link to={`/product/${product._id}`}>{product.name}</Link>
+                                    <Link to={`/detail/${product._id}`}>{product.name}</Link>
                                 </h3>
                                 <h4>{product.price} Đ</h4>
                             </div>
                         </div>
                     ))
                 }
+            </div>
+
+            <div>
+                <button
+                    disabled={false}
+                    onClick={handlePrevBtn}
+                >
+                    Prev
+                </button>
+                <button
+                    disabled={false}
+                    onClick={handleNextBtn}
+                >
+                    Next
+                </button>
             </div>
         </div>
     )

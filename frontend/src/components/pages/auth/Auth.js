@@ -6,10 +6,18 @@ import SignupForm from './SignupForm'
 import './auth.css'
 import { AuthContext } from '../../../contexts/AuthContext'
 import { Redirect } from 'react-router-dom'
+import { LOCAL_STORAGE_TOKEN_NAME } from '../../../constans/constants'
+import userApi from '../../../api/userApi'
 
 function Auth({ authRoute }) {
+    const { loadUser, authState: { isAuthenticated, authLoading } } = useContext(AuthContext)
 
-    const { authState: { isAuthenticated, authLoading } } = useContext(AuthContext)
+    if (authRoute==='signout') {
+        userApi.signout()
+        localStorage.removeItem(LOCAL_STORAGE_TOKEN_NAME)
+        loadUser() 
+    }
+
     let body
     if (authLoading)
         body = (
@@ -20,7 +28,7 @@ function Auth({ authRoute }) {
             </>
         )
     else if (isAuthenticated)
-        return <Redirect to='/dashboard' />
+        return <Redirect to='/manage' />
     else body = (
         <>
             <h2>NCC-Shop</h2>

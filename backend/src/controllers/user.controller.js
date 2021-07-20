@@ -6,6 +6,17 @@ const createError = require('http-errors')
 require('dotenv').config()
 
 //  throw createError.BadRequest()
+exports.signout = async (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1]
+    // handle logout
+    res.json({
+      message:"success!!"
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
 exports.checkUser = async (req, res) => {
   try {
     const user = await userModel.findById(req.userData.id).select('-password')
@@ -58,7 +69,7 @@ exports.signup = async (req, res) => {
           },
           process.env.JWT_KEY,
           {
-            expiresIn: "10h"
+            expiresIn: "1h"
           }
         )
         res.status(200).json({

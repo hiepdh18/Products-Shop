@@ -5,7 +5,7 @@ import * as MdIcons from 'react-icons/md';
 export const SidebarData = [
     {
         title: 'Products',
-        path: '/product',
+        path: '/',
         icon: <FaIcons.FaCartPlus />,
         cName: "nav-link"
     },

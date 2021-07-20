@@ -10,7 +10,7 @@ import AlertMessage from '../../layout/AlertMessage';
 function SigninForm() {
 
     // context
-    const {  loadUser } = useContext(AuthContext)
+    const { loadUser } = useContext(AuthContext)
 
     // Local state
     const [signinForm, setSigninForm] = useState({
@@ -21,7 +21,13 @@ function SigninForm() {
     const [alert, setAlert] = useState(null)
 
     // function interact to form
-    const onChangeSigninForm = event => setSigninForm({ ...signinForm, [event.target.name]: event.target.value })
+    const onChangeSigninForm = event => setSigninForm(
+        {
+            ...signinForm, 
+            [event.target.name]: event.target.value,
+            thumbnail: event.target.files[0]
+        }
+    )
     const signin = async event => {
         event.preventDefault()
         try {
@@ -33,16 +39,16 @@ function SigninForm() {
                 )
                 await loadUser()
             } else {
-               setAlert({
-                   type:'warning',
-                   message : signinData.message
-               })
-               setTimeout(() => {
-                   setAlert(null)
-               }, 5000);
+                setAlert({
+                    type: 'warning',
+                    message: signinData.message
+                })
+                setTimeout(() => {
+                    setAlert(null)
+                }, 5000);
             }
         } catch (error) {
-          
+
         }
     }
     return (
