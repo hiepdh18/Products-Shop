@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+bodu {
+  font-family : 'Roboto', sans-serif;
+  background: #fff;
+
+}
+* {
+  margin: 0;
+  padding: 0;
+
+}
+
+i {
+  margin-right: 10px;
+}
+
+.navbar-logo {
+  padding: 15px;
+  color: #fff;
+  pointer-events: none;
+}
+
+.navbar-mainbg {
+  background-color: #000000;
+  padding: 0px;
+}
+li.right{
+    float: right;
+}

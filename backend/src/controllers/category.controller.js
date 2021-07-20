@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 exports.createCategory = async (req, res, next) => {
+    console.log(req.body)
     catModel.findOne({ name: req.body.name})
     .exec()
     .then(category => {
@@ -10,12 +11,15 @@ exports.createCategory = async (req, res, next) => {
             var cat = new catModel({
                 _id: new mongoose.Types.ObjectId(),
                 name: req.body.name,
-                category: req.body.category
+                type: req.body.type
             })
             cat.save();
             res.json(cat)
         } else {
-            res.status(409).json("loi")
+            res.status(409).json({
+                success : false,
+                message: "Product exist!!"
+            })
         }
     })
     .catch(err => {
@@ -25,9 +29,10 @@ exports.createCategory = async (req, res, next) => {
     })
 }
 
-exports.getCategory = async (req, res) => {
-    const cat = await catModel.findOne({_id : req.params.id})
-    res.json(cat)
+
+exports.getCategoryByType = async (req, res) => {
+    const cats = await catModel.find({type : req.params.id})
+    res.json(cats)
 }
 exports.deleteCategory = async (req, res) => {
     try {

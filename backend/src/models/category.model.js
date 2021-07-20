@@ -8,6 +8,6 @@ const categorySchema = new Schema({
     slug: { type: String, }
 });
 
-var Category = mongoose.model('Catrgory', categorySchema, 'categories')
+var Category = mongoose.model('Category', categorySchema, 'categories')
 
 module.exports = Category

@@ -50,7 +50,7 @@ exports.getProducts = async (req, res, next) => {
     let page = req.params.page || 1
     let perPage = 10
     ProductModel.find()
-        .select('_id name code category price')
+        .select('_id name category price thumbnail')
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec()
@@ -65,12 +65,15 @@ exports.getProducts = async (req, res, next) => {
         })
 }
 
-exports.getProductsByCat = async (req, res, next) => {
-    let page = req.params.page || 1
-    let perPage = 10
 
-    productModel.find({ category: req.body.category })
-        .select('_id name code category price')
+exports.getProductsByCat = async (req, res, next) => {
+    let page = req.query.page || 1
+    let perPage = 10
+    let category = req.query.id
+    console.log(page, '   ', category)
+
+    ProductModel.find({ category })
+        .select('_id name code category price thumbnail')
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec()

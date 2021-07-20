@@ -1,9 +1,18 @@
 import axiosClient from "./axiosClient"
 
 const productApi = {
-    getProducts: (page) => {
-        const url = `/product/${page}`
-        return axiosClient.get(url)
+    getProducts: async (catId, page) => {
+        const url = `/product?id=${catId}&page=${page}`
+        // const url = `/product/`
+
+        console.log(url,{})
+        try {
+            return axiosClient.get(url)
+        } catch (error) {
+            
+        }
+        
     }
 }
+
 export default productApi

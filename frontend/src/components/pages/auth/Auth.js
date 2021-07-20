@@ -31,7 +31,7 @@ function Auth({ authRoute }) {
     )
 
     return (
-        <div className="landing">
+        <div className="landing" >
             <div className="dark-overlay">
                 <div className="landing-inner">
                     {body}
