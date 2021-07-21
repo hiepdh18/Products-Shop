@@ -10,7 +10,7 @@ const productApi = {
         }
     },
     getProducts: async (page) => {
-         const url = `/product/${page}`
+        const url = `/product/${page}`
         try {
             return await axiosClient.get(url)
         } catch (error) {
@@ -22,6 +22,18 @@ const productApi = {
         const url = `product/get-product/${id}`
         try {
             return await axiosClient.get(url)
+        } catch (error) {
+            
+        }
+    },
+    createProduct: async (formData)=>{
+        
+        const url =`product/`
+        const config = {
+            headers: { 'content-type': 'multipart/form-data' }
+        }
+        try {
+            axiosClient.post(url, formData,config)
         } catch (error) {
             
         }

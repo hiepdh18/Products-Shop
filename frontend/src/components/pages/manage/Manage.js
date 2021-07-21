@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import productApi from '../../../api/productApi'
 import AddProduct from '../../layout/AddProduct'
@@ -15,9 +16,9 @@ function Manage() {
     }, [])
     console.log(products)
     return (
-        <div className="">
+        <div className="container">
             <div className="row">
-                <div className="col-6">
+                <div className="col-lg-8 col-sm-12">
                     <h2>Danh sách sản phẩm</h2>
                     <table className="table">
                         <thead className="thead-dark">
@@ -38,16 +39,16 @@ function Manage() {
                                     <td>{product.code}</td>
                                     <td>{product.category.name}</td>
                                     <td>{product.price}</td>
-                                    <td><button >Cập nhật</button> <button >Xóa</button></td>
+                                    <td><Button variant='info'>Cập nhật</Button> <Button variant='danger'>Xóa</Button></td>
                                 </tr>
                             )
                             )}
                         </tbody>
                     </table>
                 </div>
-                <div className="col-6">
+                <div className="col-4">
                    <AddProduct>
-                       
+
                    </AddProduct>
                 </div>
             </div>

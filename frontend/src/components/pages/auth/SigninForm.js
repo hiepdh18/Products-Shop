@@ -25,7 +25,6 @@ function SigninForm() {
         {
             ...signinForm, 
             [event.target.name]: event.target.value,
-            thumbnail: event.target.files[0]
         }
     )
     const signin = async event => {
