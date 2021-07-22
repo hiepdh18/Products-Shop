@@ -15,7 +15,7 @@ function Navbar({ component: Component, ...rest }) {
                 NCC-Shop
             </NavLink>
 
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <div className="collapse navbar-collapse navbar-list" id="navbarSupportedContent">
                 <ul className="navbar-nav ml-auto">
                     {SidebarData.map((item, index) => {
                         return (
@@ -27,22 +27,20 @@ function Navbar({ component: Component, ...rest }) {
                             </li>
                         );
                     })}
-
-                    <div className="d-flex">
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/signin" exact>
-                                <i><AiOutlineLogin></AiOutlineLogin></i>
-                                Login
-                            </NavLink>
-                        </li>
-                        <li className="nav-item right">
-                            <NavLink className="nav-link" to="/signout" exact>
-                                <i><AiOutlineLogout></AiOutlineLogout></i>
-                                Logout
-                            </NavLink>
-                        </li>
-                    </div>
-
+                </ul>
+                <ul className='navbar-nav'>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/signin" exact>
+                            <i><AiOutlineLogin></AiOutlineLogin></i>
+                            Login
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink className="nav-link" to="/signout" exact>
+                            <i><AiOutlineLogout></AiOutlineLogout></i>
+                            Logout
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
         </nav>

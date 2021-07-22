@@ -34,7 +34,7 @@ function Products({ page, handle }) {
     }
 
     return (
-        <div className="container">
+        <div className="container main">
             <select className="browser-default custom-select" onChange={typeSelectHandle} >
                 {
                     types.map(type => (

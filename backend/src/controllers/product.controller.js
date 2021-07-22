@@ -108,8 +108,10 @@ exports.getProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res) => {
     const files = req.files
+    console.log(files)
     let thumbnailUrl
     let slideUrls = []
+    
 
     if (files['thumbnail']) {
         thumbnailUrl = files['thumbnail'][0].path

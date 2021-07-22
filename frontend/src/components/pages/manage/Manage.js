@@ -1,7 +1,7 @@
 import { Button } from 'react-bootstrap'
 import React, { useEffect, useState } from 'react'
 import productApi from '../../../api/productApi'
-import AddProduct from '../../layout/AddProduct'
+import AddProduct from './AddProduct'
 
 function Manage() {
 
@@ -16,7 +16,7 @@ function Manage() {
     }, [])
     console.log(products)
     return (
-        <div className="container">
+        <div className="container main">
             <div className="row">
                 <div className="col-lg-8 col-sm-12">
                     <h2>Danh sách sản phẩm</h2>

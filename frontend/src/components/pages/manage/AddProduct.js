@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
-import productApi from '../../api/productApi'
-import { DataContext } from '../../contexts/DataContext'
+import productApi from '../../../api/productApi'
+import { DataContext } from '../../../contexts/DataContext'
 
 function AddProduct() {
     const {
@@ -14,6 +14,7 @@ function AddProduct() {
         category: '',
         price: '',
         description: '',
+        thumbnail:null
     })
 
 
@@ -42,7 +43,7 @@ function AddProduct() {
         event.preventDefault();
         let formData = new FormData();
         formData.append('name', productForm.name);
-        formData.append('code', 'ASDF6');
+        formData.append('code', 'ASDF66');
         formData.append('category', productForm.category);
         formData.append('description', productForm.description);
         formData.append('price', productForm.price);
@@ -55,12 +56,13 @@ function AddProduct() {
     } 
 
     const onImageChange = (event) => {
-        console.log(productForm.category)
+        const imgData = event.target.file
+        console.log(event.target.value)
         setProductForm({
             ...productForm,
-            thumbnail: event.target.files[0]
+            thumbnail: imgData,
         })
-        console.log(productForm.category)
+        console.log(imgData)
     }
 
     return (
@@ -78,7 +80,7 @@ function AddProduct() {
 
                 <Form.Group >
                     <Form.Label>Loại</Form.Label>
-                    <select name='type' required className="browser-default custom-select" onChange={typeSelectHandle} >
+                    <select name='type' required className="custom-select browser-default custom-select" onChange={typeSelectHandle} >
                         {
                             types.map(type => (
                                 <option key={type._id} value={type._id}>{type.name}</option>
@@ -119,8 +121,8 @@ function AddProduct() {
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label onChange={onImageChange}>Ảnh minh họa</Form.Label>
-                    <Form.File  />
+                    <Form.Label>Ảnh minh họa</Form.Label>
+                    <Form.File onChange={onImageChange} />
                 </Form.Group>
                 <Button variant='success' className='mt-3' type='submit'>Thêm</Button>
             </Form>

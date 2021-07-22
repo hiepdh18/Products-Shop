@@ -19,14 +19,14 @@ function DetailProduct() {
     console.log(product)
 
     return (
-        <div className="container">
-            <div className="details" key={product._id}>
-                <div className="box-details">
+        <div className="container main">
+            <div className="row" key={product._id}>
+                <div className="info col-5">
                     <h2 title={product.name}>{product.name}</h2>
                     <h3>{product.price} VND</h3>
                     <p>{product.description}</p>
                 </div>
-                <div className='slideshow'>
+                <div className='slideshow col-7'>
                     {
                         product.slide ?
                             <ImageSlider slides={product.slide} />

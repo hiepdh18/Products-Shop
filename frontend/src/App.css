@@ -38,33 +38,6 @@
 	transform: translateX(-50%) translateY(-50%);
 }
 
-/* Post button */
-.post-button {
-	padding-top: 0;
-	background: transparent;
-	border: none;
-}
-
-.post-button:hover {
-	background: transparent;
-}
-
-a.post-button.btn:focus,
-a.post-button.btn:active {
-	outline: none;
-	background: transparent;
-	border: none;
-	box-shadow: none;
-}
-
-button.post-button.btn:focus,
-button.post-button.btn:active {
-	outline: none;
-	background: transparent;
-	border: none;
-	box-shadow: none;
-}
-
 /* Floating add button */
 .btn-floating {
 	position: fixed;
@@ -86,27 +59,12 @@ button.post-button.btn:active {
 	box-shadow: none;
 }
 
-/* Add new post tooltip */
-.tooltip {
-	background: transparent;
+
+/* Body */
+.main {
+  margin: 5rem;
 }
 
-.tooltip .arrow::before {
-	border-left-color: #78c2ad;
-}
-
-.tooltip-inner {
-	background: #78c2ad;
-}
-
-/* Post border thicker */
-.border-success,
-.border-warning,
-.border-danger {
-	border-width: 2px;
-}
-
-/* Post title */
-.post-title {
-	margin-bottom: 0.5rem;
+.custom-select{
+	margin: 1rem;
 }

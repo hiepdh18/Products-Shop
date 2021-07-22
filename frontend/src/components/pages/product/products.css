@@ -1,5 +1,6 @@
 
 /* ---------------Products--------------- */
+
 .products{
   width: 100%;
   display: flex;
@@ -11,7 +12,7 @@
   max-width: 350px;
   width: 100%;
   overflow: hidden;
-  height: 570px;
+  height: 450px;
   box-shadow: 0 0 5px #ccc;
   padding: 15px;
   margin: 15px;
@@ -59,4 +60,10 @@
   letter-spacing: 2px;
 }
 /* ---------------Details products--------------- */
-
+.slideshow {
+  float: right;
+}
+.info {
+   float: left;
+   margin-top: 4rem;
+}
